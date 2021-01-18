@@ -221,41 +221,13 @@ Next, we’ll configure the TensorFlow build using the configure.py script. From
 python ./configure.py
 ```
 
-This will initiate a Bazel session. As I mentioned before, you can build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow. If you're only using this TensorFlow build to convert your TensorFlow Lite model, **I recommend building the CPU-only version**. If you’d still like to build the GPU-enabled version for some other reason, then you need to have the appropriate version of CUDA and cuDNN installed. This guide doesn't cover building the GPU-enabled version of TensorFlow, but you can try following the official build instructions on the [TensorFlow website](https://www.tensorflow.org/install/source_windows).
-
-Here’s what the configuration session will look like if you are building for CPU only. Basically, press Enter to select the default option for each question.
-
-```
-You have bazel 0.21.0- (@non-git) installed. 
-
-Please specify the location of python. [Default is C:\ProgramData\Anaconda3\envs\tensorflow-build\python.exe]: 
-  
-Found possible Python library paths: 
-
-  C:\ProgramData\Anaconda3\envs\tensorflow-build\lib\site-packages 
-
-Please input the desired Python library path to use.  Default is [C:\ProgramData\Anaconda3\envs\tensorflow-build\lib\site-packages] 
-
-Do you wish to build TensorFlow with XLA JIT support? [y/N]: N 
-No XLA JIT support will be enabled for TensorFlow. 
-
-Do you wish to build TensorFlow with ROCm support? [y/N]: N 
-No ROCm support will be enabled for TensorFlow. 
-  
-Do you wish to build TensorFlow with CUDA support? [y/N]: N 
-No CUDA support will be enabled for TensorFlow. 
-```
-
-Once the configuration is finished, TensorFlow is ready to be bulit!
-
 #### Step 2e. Build TensorFlow package
-Next, use Bazel to create the package builder for TensorFlow. To create the CPU-only version, issue the following command. The build process took about 70 minutes on my computer. 
+
 
 ```
 bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package 
 ```
 
-Now that the package builder has been created, let’s use it to build the actual TensorFlow wheel file. Issue the following command (it took about 5 minutes to complete on my computer): 
 
 ```
 bazel-bin\tensorflow\tools\pip_package\build_pip_package C:/tmp/tensorflow_pkg 
