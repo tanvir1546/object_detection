@@ -17,7 +17,7 @@ python
   >>> exit()
 mkdir TensorFlow
 cd C:\TensorFlow
-##Download Model
+## Download Model
 conda install -c anaconda git
 git clone https://github.com/tensorflow/models.git
 cd models\research
