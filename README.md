@@ -124,19 +124,8 @@ cd C:\TensorFlow\workspace\training_demo
 python TF-image-od.py
 ```
 ### Step 2. Build TensorFlow From Source
-To convert the frozen graph we just exported into a model that can be used by TensorFlow Lite, it has to be run through the TensorFlow Lite Optimizing Converter (TOCO). Unfortunately, to use TOCO, we have to build TensorFlow from source on our computer. To do this, we’ll create a separate Anaconda virtual environment for building TensorFlow. 
-
-This part of the tutorial breaks down step-by-step how to build TensorFlow from source on your Windows PC. It follows the [Build TensorFlow From Source on Windows](https://www.tensorflow.org/install/source_windows) instructions given on the official TensorFlow website, with some slight modifications. 
-
-This guide will show how to build either the CPU-only version of TensorFlow or the GPU-enabled version of TensorFlow v1.13. If you would like to build a version other than TF v1.13, you can still use this guide, but check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) and make sure you use the correct package versions. 
-
-**If you are only building TensorFlow to convert a TensorFlow Lite object detection model, I recommend building the CPU-only version!** It takes very little computational effort to export the model, so your CPU can do it just fine without help from your GPU. If you’d like to build the GPU-enabled version anyway, then you need to have the appropriate version of CUDA and cuDNN installed. [The TensorFlow installation guide](https://www.tensorflow.org/install/gpu#windows_setup) explains how to install CUDA and cuDNN. Check the [build configuration list](https://www.tensorflow.org/install/source_windows#tested_build_configurations) to see which versions of CUDA and cuDNN are compatible with which versions of TensorFlow.
-
-**If you get any errors during this process, please look at the [FAQ section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#frequently-asked-questions-and-common-errors) at the bottom of this guide! It gives solutions to common errors that occur.**
 
 #### Step 2a. Install MSYS2
-MSYS2 has some binary tools needed for building TensorFlow. It also automatically converts Windows-style directory paths to Linux-style paths when using Bazel. The Bazel build won’t work without MSYS2 installed! 
-
 First, install MSYS2 by following the instructions on the [MSYS2 website](https://www.msys2.org/). Download the msys2-x86_64 executable file and run it. Use the default options for installation. After installing, open MSYS2 and issue:
 
 ```
@@ -152,19 +141,8 @@ pacman -Su
 pacman -S patch unzip
 ```
 
-<p align="center">
-   <img src="doc/MSYS_window.png">
-</p>
 
-This updates MSYS2’s package manager and downloads the patch and unzip packages. Now, close the MSYS2 window. We'll add the MSYS2 binary to the PATH environment variable in Step 2c.
-
-#### Step 2b. Install Visual C++ Build Tools 2015
-Install Microsoft Build Tools 2015 and Microsoft Visual C++ 2015 Redistributable by visiting the [Visual Studio older downloads](https://visualstudio.microsoft.com/vs/older-downloads/) page. Click the “Redistributables and Build Tools” dropdown at the bottom of the list.  Download and install the following two packages:
-
-* **Microsoft Build Tools 2015 Update 3** - Use the default installation options in the install wizard. Once you begin installing, it goes through a fairly large download, so it will take a while if you have a slow internet connection. It may give you some warnings saying build tools or redistributables have already been installed. If so, that's fine; just click through them.
-* **Microsoft Visual C++ 2015 Redistributable Update 3** – This may give you an error saying the redistributable has already been installed. If so, that’s fine.
-
-Restart your PC after installation has finished.
+#
 
 #### Step 2c. Update Anaconda and create tensorflow-build environment
 Now that the Visual Studio tools are installed and your PC is freshly restarted, open a new Anaconda Prompt window. First, update Anaconda to make sure its package list is up to date. In the Anaconda Prompt window, issue these two commands: 
@@ -177,7 +155,7 @@ conda update --all
 The update process may take up to an hour, depending on how it's been since you installed or updated Anaconda. Next, create a new Anaconda virtual environment called “tensorflow-build”. We’ll work in this environment for the rest of the build process. Create and activate the environment by issuing:
 
 ```
-conda create -n tensorflow-build pip python=3.6
+conda create -n tensorflow-build pip python=3.8
 conda activate tensorflow-build
 ```
 
@@ -208,14 +186,12 @@ Next, we’ll install Bazel and some other Python packages that are used for bui
 
 ```
 pip install six numpy wheel
-pip install keras_applications==1.0.6 --no-deps
-pip install keras_preprocessing==1.0.5 --no-deps
+pip install keras_applications --no-deps
+pip install keras_preprocessing --no-deps
 ```
 
-Then install Bazel v0.21.0 by issuing the following command. (If you are building a version of TensorFlow other than v1.13, you may need to use a different version of Bazel.)
-
 ```
-conda install -c conda-forge bazel=0.21.0
+conda install -c conda-forge bazel=3.1.0
 ```
 
 #### Step 2d. Download TensorFlow source and configure build
@@ -236,10 +212,8 @@ cd tensorflow
 Next, check out the branch for TensorFlow v1.13: 
 
 ```
-git checkout r1.13
+git checkout r2.4
 ```
-
-The version you check out should match the TensorFlow version you used to train your model in [Step 1](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#step-1-train-quantized-ssd-mobilenet-model-and-export-frozen-tensorflow-lite-graph). If you used a different version than TF v1.13, then replace "1.13" with the version you used. See the [FAQs section](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#how-do-i-check-which-tensorflow-version-i-used-to-train-my-detection-model) for instructions on how to check the TensorFlow version you used for training.
 
 Next, we’ll configure the TensorFlow build using the configure.py script. From the C:\tensorflow-build\tensorflow directory, issue:
 
@@ -508,42 +482,10 @@ But who cares about running it on a PC? The whole reason we’re using TensorFlo
 
 # Part 2 - How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with Optional Coral USB Accelerator)
 
-<p align="center">
-   <img src="doc/TFLite-vs-EdgeTPU.gif">
-</p>
-
-## Introduction
-This guide provides step-by-step instructions for how to set up TensorFlow Lite on the Raspberry Pi and use it to run object detection models. It also shows how to set up the Coral USB Accelerator on the Pi and run Edge TPU detection models. It works for the Raspberry Pi 3 and Raspberry Pi 4 running either Rasbpian Buster or Rasbpian Stretch.
-
-This guide is the second part of my larger TensorFlow Lite tutorial series:
-
-1. [How to Train, Convert, and Run Custom TensorFlow Lite Object Detection Models on Windows 10](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi#part-1---how-to-train-convert-and-run-custom-tensorflow-lite-object-detection-models-on-windows-10)
-2. How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi (with Optional Coral USB Accelerator) *<--- You are here!*
-3. How to Run TensorFlow Lite Object Detection Models on Android Devices
-
-TensorFlow Lite (TFLite) models run much faster than regular TensorFlow models on the Raspberry Pi. You can see a comparison of framerates obtained using regular TensorFlow, TensorFlow Lite, and Coral USB Accelerator models in my [TensorFlow Lite Performance Comparison YouTube video](https://www.youtube.com/watch?v=TiOKvOrYNII).
-
-This portion of the guide is split in to three sections:
-
-* [Section 1. Run TensorFlow Lite Object Detection Models on the Raspberry Pi](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#part-1---how-to-set-up-and-run-tensorflow-lite-object-detection-models-on-the-raspberry-pi)
-* [Section 2. Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#section-2---run-edge-tpu-object-detection-models-on-the-raspberry-pi-using-the-coral-usb-accelerator)
-* [Section 3. Compile Custom Edge TPU Object Detection Models](https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/Raspberry_Pi_Guide.md#section-2---run-edge-tpu-object-detection-models-on-the-raspberry-pi-using-the-coral-usb-accelerator)
-
-This repository also includes scripts for running the TFLite and Edge TPU models on images, videos, or webcam/Picamera feeds.
 
 ## Section 1 - How to Set Up and Run TensorFlow Lite Object Detection Models on the Raspberry Pi
 
-Setting up TensorFlow Lite on the Raspberry Pi is much easier than regular TensorFlow! These are the steps needed to set up TensorFlow Lite:
-
-- 1a. Update the Raspberry Pi
-- 1b. Download this repository and create virtual environment
-- 1c. Install TensorFlow and OpenCV
-- 1d. Set up TensorFlow Lite detection model
-- 1e. Run TensorFlow Lite model!
-
-I also made a YouTube video that walks through this guide:
-
-[![Link to my YouTube video!](https://raw.githubusercontent.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/master/doc/YouTube_video1.JPG)](https://www.youtube.com/watch?v=aimSGOAUI8Y)
+S
 
 ### Step 1a. Update the Raspberry Pi
 First, the Raspberry Pi needs to be fully updated. Open a terminal and issue:
