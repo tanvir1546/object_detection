@@ -1,5 +1,5 @@
 # object_detection
-##Requirements
+## Requirements
 (Visual Studio 2019 with C++ Build Tools is required.https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16)
 ( Visual C++ 2015 build is required https://go.microsoft.com/fwlink/?LinkId=691126)
 CUDA enabled devices https://developer.nvidia.com/cuda-gpus
@@ -7,20 +7,23 @@ Install NVIDIA DRIVER https://www.nvidia.com/Download/index.aspx
 Install Install CUDA TOOLKIT v11.1 https://developer.download.nvidia.com/compute/cuda/11.1.1/local_installers/cuda_11.1.1_456.81_win10.exe
 Download cuDNN https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.0.5/11.1_20201106/cudnn-11.1-windows-x64-v8.0.5.39.zip
 Download Anaconda https://www.anaconda.com/products/individual
-Create virtual environment.  conda create -n tensorflow pip python=3.8
-activate virtual Environment   conda activate tensorflow
-install tensorflow gpu 
+## Create and activate virtual environment.
+conda create -n tensorflow pip python=3.8
 conda activate tensorflow
+install tensorflow gpu 
 python
->>> import tensorflow as tf
->>> print(tf.__version__)
+  >>> import tensorflow as tf
+  >>> print(tf.__version__)
+  >>> exit()
 mkdir TensorFlow
 cd C:\TensorFlow
+##Download Model
+conda install -c anaconda git
 git clone https://github.com/tensorflow/models.git
-conda install -c anaconda protobuf
 cd models\research
 protoc object_detection\protos\*.proto --python_out=.
-Open Anaconda promt
+Close CMD.
+## Open Anaconda promt
 conda activate tensorflow
 python -m pip install --upgrade pip
 pip install cython
@@ -34,16 +37,19 @@ pip install matplotlib
 pip install pandas
 pip install opencv-python
 install pycocotools using following command
-pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI  ( Visual C++ 2015 build is required https://go.microsoft.com/fwlink/?LinkId=691126)
+pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI 
 cd C:\TensorFlow\models\research
 copy object_detection\packages\tf2\setup.py .
 python -m pip install .
-check if everything is working perfectly.
+## check if everything is working perfectly.
 python object_detection\builders\model_builder_tf2_test.py
+## Export pre-trained test.record and train.record
 cd C:\TensorFlow\scripts\preprocessing
 python generate_tfrecord.py -x C:\Tensorflow\workspace\training_demo\images\train -l C:\Tensorflow\workspace\training_demo\annotations\label_map.pbtxt -o C:\Tensorflow\workspace\training_demo\annotations\train.record
 python generate_tfrecord.py -x C:\Tensorflow\workspace\training_demo\images\test -l C:\Tensorflow\workspace\training_demo\annotations\label_map.pbtxt -o C:\Tensorflow\workspace\training_demo\annotations\test.record
-place the downloaded model in pre-trained model
+## place the downloaded model in pre-trained model
+Download ssd mobilenet models from here.
+https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md
 copy and edit pipeline.config to models/my_ssd_mobilenet_v2_fpnlite
 Line 3. Change num_classes to the number of classes your model detects.3
 Line 135. Change batch_size according to available memory (Higher values require more memory and vice-versa). I changed it to:
@@ -63,11 +69,11 @@ input_path: "annotations/test.record"
 cd C:\TensorFlow\workspace\training_demo
 python model_main_tf2.py --model_dir=models\my_ssd_mobilenet_v2_fpnlite --pipeline_config_path=models\my_ssd_mobilenet_v2_fpnlite\pipeline.config
 
-monitoring training with tensorboard
+## monitoring training with tensorboard
 conda activate tensorflow
 cd C:\TensorFlow\workspace\training_demo
 tensorboard --logdir=models\my_ssd_mobilenet_v2_fpnlite
-
+## Exporting the Inference Graph
 cd C:\TensorFlow\workspace\training_demo
 
 
@@ -75,7 +81,13 @@ python .\exporter_main_v2.py --input_type image_tensor --pipeline_config_path .\
 
 
 
-Evaluating the Model
+## Evaluating the Model
 
 cd C:\TensorFlow\workspace\training_demo
 python model_main_tf2.py --pipeline_config_path models\my_ssd_mobilenet_v2_fpnlite\pipeline.config --model_dir models\my_ssd_mobilenet_v2_fpnlite --checkpoint_dir models\my_ssd_mobilenet_v2_fpnlite --alsologtostderr
+
+
+## Using the model
+
+cd C:\TensorFlow\workspace\training_demo
+python TF-image-od.py
