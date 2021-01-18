@@ -8,25 +8,43 @@ Install Install CUDA TOOLKIT v11.1 https://developer.download.nvidia.com/compute
 Download cuDNN https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.0.5/11.1_20201106/cudnn-11.1-windows-x64-v8.0.5.39.zip
 Download Anaconda https://www.anaconda.com/products/individual
 ## Create and activate virtual environment.
+```
 conda create -n tensorflow pip python=3.8
+```
 conda activate tensorflow
-install tensorflow gpu 
+## install tensorflow gpu
+```
+pip install tensorflow-gpu
+```
 python
+  ```
   >>> import tensorflow as tf
+  ```
   >>> print(tf.__version__)
+  ```
   >>> exit()
+```
 mkdir TensorFlow
+```
 cd C:\TensorFlow
 ## Download Model
+```
 conda install -c anaconda git
+```
 git clone https://github.com/tensorflow/models.git
+```
 cd models\research
+```
 protoc object_detection\protos\*.proto --python_out=.
 Close CMD.
 ## Open Anaconda promt
+```
 conda activate tensorflow
+```
 python -m pip install --upgrade pip
+```
 pip install cython
+```
 conda install -c anaconda protobuf
 pip install pillow
 pip install lxml
