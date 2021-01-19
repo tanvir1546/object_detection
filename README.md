@@ -138,8 +138,7 @@ cd C:\TensorFlow\workspace\training_demo
 ```
 python export_tflite_graph_tf2.py --pipeline_config_path models\my_ssd_mobilenet_v2_fpnlite\pipeline.config --trained_checkpoint_dir models\my_ssd_mobilenet_v2_fpnlite --output_directory exported-models\my_tflite_model
 ```
-### Creating a New Environment and Installing TensorFlow Nightly
-
+### Creating a New Environment and Installing TensorFlow
 ```
 conda deactivate
 ```
@@ -202,10 +201,10 @@ cd tflite
 sudo pip3 install virtualenv
 ```
 
-Then, create the "tflite1-env" virtual environment by issuing:
+Then, create the "tflite-env" virtual environment by issuing:
 
 ```
-python3 -m venv tflite1-env
+python3 -m venv tflite-env
 ```
 
 This will create a folder called tflite1-env inside the tflite1 directory. The tflite1-env folder will hold all the package libraries for this environment. Next, activate the environment by issuing:
