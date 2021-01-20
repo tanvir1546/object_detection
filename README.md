@@ -21,14 +21,14 @@ Variable value:C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1
 6. Download Anaconda https://www.anaconda.com/products/individual
 
 ## STEP 1
-## Create and activate virtual environment.
+### Create and activate virtual environment.
 Open **Command Promt**
 ```
 conda create -n tensorflow pip python=3.8
 
 conda activate tensorflow
 ```
-## Install tensorflow-gpu
+### Install tensorflow-gpu
 ```
 pip install tensorflow-gpu
 ```
@@ -36,18 +36,19 @@ pip install tensorflow-gpu
 ```
 pip install tensorflow
 ```
-##### Test your installation 
+### Test your installation 
 ```
 python
   >>> import tensorflow as tf
   >>> print(tf.__version__)
   >>> exit()
 ```
+
 ```
 mkdir TensorFlow
 cd C:\TensorFlow
 ```
-## Download Model
+### Download Model
 ```
 conda install -c anaconda git
 git clone https://github.com/tensorflow/models.git
@@ -55,7 +56,7 @@ cd models\research
 protoc object_detection\protos\*.proto --python_out=.
 ```
 Close **Command Prompt**.
-## Open Anaconda prompt
+### Open Anaconda prompt
 **Install pre-requisites:**
 ```
 conda activate tensorflow
@@ -98,7 +99,7 @@ pyrcc5 -o libs/resources.py resources.qrc
 python labelImg.py
 ```
 
-## Export pre-trained test.record and train.record
+### Export test.record and train.record
 ```
 C:\TensorFlow
 git clone https://github.com/tanvir1546/object-detection.git
@@ -108,7 +109,7 @@ cd C:\TensorFlow\scripts\preprocessing
 python generate_tfrecord.py -x C:\Tensorflow\workspace\training_demo\images\train -l C:\Tensorflow\workspace\training_demo\annotations\label_map.pbtxt -o C:\Tensorflow\workspace\training_demo\annotations\train.record
 python generate_tfrecord.py -x C:\Tensorflow\workspace\training_demo\images\test -l C:\Tensorflow\workspace\training_demo\annotations\label_map.pbtxt -o C:\Tensorflow\workspace\training_demo\annotations\test.record
 ```
-## place the downloaded model in pre-trained model
+### place the downloaded model in pre-trained model
 **Download ssd mobilenet models from here**.
 http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_mobilenet_v2_fpnlite_320x320_coco17_tpu-8.tar.gz
 Download and extract the file. Copy the file to **C:\TensorFlow\workspace\training_demo\pre-trained-models**
@@ -129,13 +130,13 @@ Line 189. input_path: "annotations/test.record"
 cd C:\TensorFlow\workspace\training_demo
 python model_main_tf2.py --model_dir=models\my_ssd_mobilenet_v2_fpnlite --pipeline_config_path=models\my_ssd_mobilenet_v2_fpnlite\pipeline.config
 ```
-## Monitoring training with tensorboard- open another anaconda promt
+### Monitoring training with tensorboard- open another anaconda promt(Skip this if you want)
 ```
 conda activate tensorflow
 cd C:\TensorFlow\workspace\training_demo
 tensorboard --logdir=models\my_ssd_mobilenet_v2_fpnlite
 ```
-## Exporting the Inference Graph
+### Exporting the Inference Graph
 ```
 cd C:\TensorFlow\workspace\training_demo
 
@@ -143,13 +144,13 @@ python .\exporter_main_v2.py --input_type image_tensor --pipeline_config_path .\
 ```
 
 
-## Evaluating the Model
+### Evaluating the Model(skip this)
 ```
 cd C:\TensorFlow\workspace\training_demo
 python model_main_tf2.py --pipeline_config_path models\my_ssd_mobilenet_v2_fpnlite\pipeline.config --model_dir models\my_ssd_mobilenet_v2_fpnlite --checkpoint_dir models\my_ssd_mobilenet_v2_fpnlite --alsologtostderr
 ```
 
-## Using the model
+### Using the model
 ```
 cd C:\TensorFlow\workspace\training_demo
 python TF-image-od.py
@@ -158,9 +159,6 @@ python TF-image-od.py
 
 ### Exporting the Model as tf_lite
 
-```
-conda activate tensorflow
-```
 ```
 cd C:\TensorFlow\workspace\training_demo
 ```
@@ -172,7 +170,7 @@ python export_tflite_graph_tf2.py --pipeline_config_path models\my_ssd_mobilenet
 conda deactivate
 ```
 ```
-conda create -n tflite pip python=3.8
+conda create -n tflite pip python=3.7
 ```
 ```
 conda activate tflite
@@ -205,7 +203,7 @@ python convert-to-tflite.py
 Preparing our Model for Use ```exported-models\my_tflite_model\saved_model``` as ```labels.txt```. 
 Trick is your delete all the extra things in lebel_map.pbtxt jst write down the class name.
 
-# Part 4 - How to Run TensorFlow Lite Object Detection Models on the Raspberry Pi 
+## Part 2 - Run TensorFlow Lite Object Detection Models on the Raspberry Pi 
 
 
 
@@ -251,37 +249,38 @@ bash get_pi_requirements.sh
 ### Step 1d. Set up TensorFlow Lite detection model
 copy model.tflite and labels.txt from laptop to raspberry pi.
 
-
-## Step 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#### Use JETSON Nano
+### Use JETSON Nano
 Everything is same except we need to install tensorflow-gpu
 
+## Step 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
+```
+.
+.
+.
+.
+.
+.
+.
+.まだやってない・
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+```
 
 
 
-### Step 2. Build TensorFlow From Source to quantize the saved model
+
+
+### Step . Build TensorFlow From Source to quantize the saved model
 
 #### Step 2a. Install MSYS2
 [MSYS2 website](https://www.msys2.org/). After installing, open MSYS2 and issue:
@@ -395,12 +394,21 @@ Once the shell is opened, issue these commands:
 exit()
 ```
 
-### Step 3. Use TOCO to Create Optimzed TensorFlow Lite Model, Create Label Map, Run Model
-Although we've already exported a frozen graph of our detection model for TensorFlow Lite, we still need run it through the TensorFlow Lite Optimizing Converter (TOCO) before it will work with the TensorFlow Lite interpreter. TOCO converts models into an optimized FlatBuffer format that allows them to run efficiently on TensorFlow Lite. We also need to create a new label map before running the model.
+### Step 3. 
 
 #### Step 3a. Create optimized TensorFlow Lite model
-
-
+```
+.
+,
+,
+,
+,まだやってない・
+,
+,
+,
+,
+,
+```
 
 
 
