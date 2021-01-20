@@ -254,7 +254,7 @@ Everything is same except we need to install tensorflow-gpu
 
 ## Step 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
 ```
-.
+.EDGE TPU https://coral.ai/products/accelerator/
 .
 .
 .
@@ -399,7 +399,7 @@ exit()
 #### Step 3a. Create optimized TensorFlow Lite model
 ```
 .
-,
+,https://docs.nvidia.com/deeplearning/frameworks/tf-trt-user-guide/index.html
 ,
 ,
 ,まだやってない・
