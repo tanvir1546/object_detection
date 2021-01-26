@@ -257,3 +257,4 @@ Everything is same except we need to install separate version of tf-runtime as i
 cd object_detection
 bash install-prerequisites.sh
 ```
+#Special Thanks to this repo: https://github.com/EdjeElectronics
