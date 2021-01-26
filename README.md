@@ -212,10 +212,11 @@ Trick is your delete all the extra things in lebel_map.pbtxt jst write down the 
 Next, clone this GitHub repository by issuing the following command. The repository contains the scripts we'll use to run TensorFlow Lite, as well as a shell script that will make installing everything easier. Issue:
 
 ```
-git clone https://github.com/tanvir1546/object_detection/raspi.git
+git clone https://github.com/tanvir1546/object_detection.git
 ```
 
 ```
+cd object_detection
 mv raspi tflite
 cd tflite
 ```
@@ -243,200 +244,16 @@ source tflite-env/bin/activate
 ### Step 1c. Install TensorFlow Lite dependencies and OpenCV
 
 ```
-bash get_pi_requirements.sh
+cd tflite
+bash install-prerequisits.sh
 ```
 
 ### Step 1d. Set up TensorFlow Lite detection model
-copy model.tflite and labels.txt from laptop to raspberry pi.
+copy model.tflite and labels.txt from laptop to raspberry pi and place it to model folder
 
 ### Use JETSON Nano
-Everything is same except we need to install tensorflow-gpu
-
-## Step 2 - Run Edge TPU Object Detection Models on the Raspberry Pi Using the Coral USB Accelerator
-EDGE TPU https://coral.ai/products/accelerator/
+Everything is same except we need to install separate version of tf-runtime as it 64 bit operating system
 ```
-.
-.
-.
-.
-.
-.
-.
-.まだやってない・
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
+cd object_detection
+bash install-prerequisites.sh
 ```
-
-
-
-
-
-### Step . Build TensorFlow From Source to quantize the saved model
-
-#### Step 2a. Install MSYS2
-[MSYS2 website](https://www.msys2.org/). After installing, open MSYS2 and issue:
-
-```
-pacman -Syu
-```
-
-After it's completed, close the window, re-open it, and then issue the following two commands:
-
-```
-pacman -Su
-pacman -S patch unzip
-```
-
-
-#### Step 2c. Update Anaconda and create tensorflow-build environment
-```
-conda update -n base -c defaults conda
-conda update --all
-```
-
-```
-conda create -n tensorflow-build pip python=3.8
-conda activate tensorflow-build
-```
-
-
-Update pip by issuing:
-
-```
-python -m pip install --upgrade pip
-```
-
-We'll use Anaconda's git package to download the TensorFlow repository, so install git using:
-
-```
-conda install -c anaconda git
-```
-
-Next, add the MSYS2 binaries to this environment's PATH variable by issuing:
-
-```
-set PATH=%PATH%;C:\msys64\usr\bin
-```
-
-#### Step 2d. Download Bazel and Python package dependencies
-```
-pip install six numpy wheel
-pip install keras_applications --no-deps
-pip install keras_preprocessing --no-deps
-```
-
-```
-conda install -c conda-forge bazel=3.1.0
-```
-
-#### Step 2d. Download TensorFlow source and configure build
-```
-mkdir C:\tensorflow-build
-cd C:\tensorflow-build
-```
-
-```
-git clone https://github.com/tensorflow/tensorflow.git 
-cd tensorflow 
-``` 
-
-```
-git checkout r2.4
-```
-
-
-```
-python ./configure.py
-```
-
-#### Step 2e. Build TensorFlow package
-
-
-```
-bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package 
-```
-
-
-```
-bazel-bin\tensorflow\tools\pip_package\build_pip_package C:/tmp/tensorflow_pkg 
-```
-Wheel file is in  C:\tmp\tensorflow_pkg.
-
-#### Step 2f. Install TensorFlow and test it out!
-
-```
-pip3 install C:/tmp/tensorflow_pkg/tensorflow-2.4.0-cp38-cp38-win_amd64.whl
-```
-
-## Check
-
-```
-python
-```
-
-Once the shell is opened, issue these commands:
-
-```
->>> import tensorflow as tf
->>> tf.__version__
-```
-
-```
-exit()
-```
-
-### Step 3. 
-
-#### Step 3a. Create optimized TensorFlow Lite model
-https://docs.nvidia.com/deeplearning/frameworks/tf-trt-user-guide/index.html
-```
-.
-,
-,
-,
-,まだやってない・
-,
-,
-,
-,
-,
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
