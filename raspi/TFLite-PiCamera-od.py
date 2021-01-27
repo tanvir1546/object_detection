@@ -10,12 +10,14 @@ import sys
 import time
 from threading import Thread
 import importlib.util
+import RPi.GPIO as GPIO
+import time
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
 class VideoStream:
     """Camera object that controls video streaming from the Picamera"""
-    def __init__(self,resolution=(640,480),framerate=30):
+    def __init__(self,resolution=(320,320),framerate=30):
         # Initialize the PiCamera and the camera image stream
         self.stream = cv2.VideoCapture(0)
         ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
@@ -52,6 +54,20 @@ class VideoStream:
     def stop(self):
 	# Indicate that the camera and thread should be stopped
         self.stopped = True
+
+
+Servo_pin = 18  
+GPIO.setmode(GPIO.BCM)              #GPIOのモードを"GPIO.BCM"に設定
+GPIO.setup(Servo_pin, GPIO.OUT)
+Servo = GPIO.PWM(Servo_pin, 50)
+Servo.start(0)
+#Init at 0°
+#time.sleep(1)
+def servo_angle(angle):
+    duty = 2.5 + (12.0 - 2.5) * (angle + 90) / 180   #角度からデューティ比を求める
+    Servo.ChangeDutyCycle(duty)     #デューティ比を変更
+    time.sleep(0.3)
+
         
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', help='Provide the path to the TFLite file, default is models/model.tflite',
@@ -76,7 +92,6 @@ MIN_CONF_THRESH = float(args.threshold)
 
 resW, resH = args.resolution.split('x')
 imW, imH = int(resW), int(resH)
-import time
 print('Loading model...', end='')
 start_time = time.time()
 
@@ -169,6 +184,22 @@ while True:
     t2 = cv2.getTickCount()
     time1 = (t2-t1)/freq
     frame_rate_calc= 1/time1
+    servo_angle(90)
+    if (object_name=="ps" or object_name=="pet"):
+        #Go at 90°
+        servo_angle(-30)
+        servo_angle(-60)
+        servo_angle(-90)               #サーボモータ -90°
+        time.sleep(2)
+        servo_angle(-60)               #サーボモータ -60°
+        servo_angle(-30)#サーボモータ -30°
+        servo_angle(0)
+        servo_angle(30)                #サーボモータ  30°
+        servo_angle(60)                #サーボモータ  60°
+        servo_angle(90)
+    
+
+#Close GPIO & cleanup
 
     # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'):
@@ -177,4 +208,6 @@ while True:
 # Clean up
 cv2.destroyAllWindows()
 videostream.stop()
+Servo.stop()                   #サーボモータをストップ
+GPIO.cleanup()
 print("Done")
