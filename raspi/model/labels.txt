@@ -1,4 +1,0 @@
-ps
-pet
-metal
-glass
