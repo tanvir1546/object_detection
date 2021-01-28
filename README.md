@@ -252,9 +252,25 @@ bash install-prerequisits.sh
 copy model.tflite and labels.txt from laptop to raspberry pi and place it to model folder
 
 ### Use JETSON Nano
+
+```
+sudo pip3 install virtualenv
+```
+
+Then, create the "tflite-env" virtual environment by issuing:
+
+```
+python3 -m venv tflite-env
+```
+
+This will create a folder called tflite1-env inside the tflite1 directory. The tflite1-env folder will hold all the package libraries for this environment. Next, activate the environment by issuing:
+
+```
+source tflite-env/bin/activate
+```
 Everything is same except we need to install separate version of tf-runtime as it 64 bit operating system
 ```
-cd object_detection
+cd object_detection/jetson_nano
 bash install-prerequisites.sh
 ```
 #Special Thanks to this repo: https://github.com/EdjeElectronics
