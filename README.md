@@ -1,7 +1,7 @@
 
 # object_detection
 ## Requirements
-#### 1. Visual Studio 2019 with C++ Build Tools is required for building tensorflow v2.4.0 
+#### 1. Visual Studio 2019 with C++ Build Tools is required for building tensorflow v2.4.0 (optional: if u want to build from the source)
 https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
 #### 2.  Visual C++ 2015 build is required for installing pycocotools 
 https://go.microsoft.com/fwlink/?LinkId=691126
@@ -202,7 +202,12 @@ python convert-to-tflite.py
 ### labels.txt
 Preparing our Model for Use ```exported-models\my_tflite_model\saved_model``` as ```labels.txt```. 
 Trick is your delete all the extra things in lebel_map.pbtxt jst write down the class name.
-
+### Convert to fp32 and int8
+```
+python int8.py
+```
+google colab EDGE_TPU compiler
+https://colab.research.google.com/drive/1o6cNNNgGhoT7_DR4jhpMKpq3mZZ6Of4N?usp=sharing#scrollTo=WTboEAWuJ0ku
 ## Part 2 - Run TensorFlow Lite Object Detection Models on the Raspberry Pi 
 
 
