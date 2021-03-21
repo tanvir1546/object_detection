@@ -97,8 +97,6 @@ python object_detection\builders\model_builder_tf2_test.py
 ```
 cd C:\TensorFlow
 git clone https://github.com/tzutalin/labelImg.git
-```
-```
 conda install pyqt=5
 conda install -c anaconda lxml
 cd labelImg
@@ -176,8 +174,6 @@ python TF-image-od.py
 
 ```
 cd C:\TensorFlow\workspace\training_demo
-```
-```
 python export_tflite_graph_tf2.py --pipeline_config_path models\my_ssd_mobilenet_v2_fpnlite\pipeline.config --trained_checkpoint_dir models\my_ssd_mobilenet_v2_fpnlite --output_directory exported-models\my_tflite_model
 ```
 ### Creating a New Environment and Installing TensorFlow
