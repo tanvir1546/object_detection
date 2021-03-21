@@ -1,7 +1,6 @@
 
-# object_detection
-## Requirements
-#### 1. Visual Studio 2019 with C++ Build Tools is required for building tensorflow v2.4.0 (optional: if u want to build from the source)
+# Object Detection in Windows 10 and implementation in Raspberry Pi 4 with EDGE TPU 
+## Requirements#### 1. Visual Studio 2019 with C++ Build Tools is required for building tensorflow v2.4.0 (optional: if u want to build from the source)
 https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
 #### 2.  Visual C++ 2015 build is required for installing pycocotools 
 https://go.microsoft.com/fwlink/?LinkId=691126
@@ -41,14 +40,21 @@ pip install tensorflow
 python
   >>> import tensorflow as tf
   >>> print(tf.__version__)
+  2021-03-22 00:19:13.814499: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library cudart64_110.dll
+  >>> print(tf.__version__)
+  2.4.0
   >>> exit()
 ```
 
 ```
+Open command Promt. Press Windows+R type "cmd" and hit enter. 
+In command promt type following commnad.
+cd C:\
 mkdir TensorFlow
 cd C:\TensorFlow
 ```
 ### Download Model
+
 ```
 conda install -c anaconda git
 git clone https://github.com/tensorflow/models.git
@@ -90,19 +96,28 @@ python object_detection\builders\model_builder_tf2_test.py
 ### Open another anaconda prompt
 ```
 cd C:\TensorFlow
-git clone https://codeload.github.com/tzutalin/labelImg.git
+git clone https://github.com/tzutalin/labelImg.git
 ```
 ```
 conda install pyqt=5
 conda install -c anaconda lxml
+cd labelImg
 pyrcc5 -o libs/resources.py resources.qrc
 python labelImg.py
 ```
+Tips: keyboard shortcuts: 'a' and 'd' for previous and next image. w for RectBox. If you are working with same class go to view and check "Single class mode" and "Auto save mode" 
+Save format should be PascalVOC.
 
-### Export test.record and train.record
+### Divide your Dataset and Export test.record and train.record
 ```
 C:\TensorFlow
 git clone https://github.com/tanvir1546/object-detection.git
+```
+Divide your dataset into test and train. 
+```
+cd C:\TensorFlow\scripts\preprocessing
+python partition_dataset.py -i C:/TensorFlow/workspace/training_demo/images/raw -o C:/TensorFlow/workspace/training_demo/images/ -x
+
 ```
 ```
 cd C:\TensorFlow\scripts\preprocessing
@@ -117,7 +132,7 @@ Download and extract the file. Copy the file to **C:\TensorFlow\workspace\traini
 copy only **pipeline.config** to models/my_ssd_mobilenet_v2_fpnlite and edit **pipeline.config** 
 ```
 Line 3. num_classes: 2(type of object u r detecting. )
-Line 135. batch_size: 5
+Line 135. batch_size: 5(adjust this for your computer spec...for higher value u need more memory)
 Line 165. fine_tune_checkpoint: "pre-trained-models/ssd_mobilenet_v2_fpnlite_320x320_coco17_tpu-8/checkpoint/ckpt-0"
 Line 171. fine_tune_checkpoint_type: "detection"
 Line 175. label_map_path: "annotations/label_map.pbtxt"
@@ -278,4 +293,8 @@ Everything is same except we need to install separate version of tf-runtime as i
 cd object_detection/jetson_nano
 bash install-prerequisites.sh
 ```
-#Special Thanks to this repo: https://github.com/EdjeElectronics
+##### ACKNOWLEGEMENT
+Based ON: https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/
+Special Thanks to: 
+https://github.com/EdjeElectronics/
+https://github.com/armaanpriyadarshan/
