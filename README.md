@@ -121,7 +121,7 @@ Line 185. label_map_path: "annotations/label_map.pbtxt"
 Line 189. input_path: "annotations/test.record"
 ```
 
-** Congratulations! Your System is ready for Training..... **
+**Congratulations! Your System is ready for Training..... **
 ## STEP 2: Preparing Datasets
 ### STEP(2.a)Open another anaconda prompt for labelling the image.. if you finished this earlier skip this step
 ```
@@ -173,15 +173,15 @@ python .\exporter_main_v2.py --input_type image_tensor --pipeline_config_path .\
 cd C:\TensorFlow\workspace\training_demo
 python model_main_tf2.py --pipeline_config_path models\my_ssd_mobilenet_v2_fpnlite\pipeline.config --model_dir models\my_ssd_mobilenet_v2_fpnlite --checkpoint_dir models\my_ssd_mobilenet_v2_fpnlite --alsologtostderr
 ```
-## STEP 4:
-### Using the model
+## STEP 4: Using the model
 copy annotations/label_map.pbtxt to models/my_ssd_mobilenet_v2_fpnlite/label_map.pbtxt
 ```
 cd C:\TensorFlow\workspace\training_demo
-python TF-image-od.py
+python TF-image-od.py --image image_path/image.jpg
 ```
 
 **Congratulations! You have completed the training and finished training .... **
+
 ## PART 2: CONVERTING TO TF_LITE MODEL FOR Raspberry Pi
 ###  STEP (1.a) Exporting the Model as tf_lite
 
@@ -192,35 +192,22 @@ python export_tflite_graph_tf2.py --pipeline_config_path models\my_ssd_mobilenet
 #### Creating a New Environment and Installing TensorFlow
 ```
 conda deactivate
-```
-```
 conda create -n tflite pip python=3.7
-```
-```
 conda activate tflite
-```
-```
-pip install tensorflow
-```
-```
+pip install tf-nightly
 python
-```
-```
 Python 3.7.9 (default, Aug 31 2020, 17:10:11) [MSC v.1916 64 bit (AMD64)] :: Anaconda, Inc. on win32
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import tensorflow as tf
 >>> print(tf.__version)
+2.5.0
 ```
 
-```
-2.4.0
-```
-
-### Converting the Model to TensorFlow Lite
+#### Converting the Model to TensorFlow Lite
 ```
 python convert-to-tflite.py
 ```
-### labels.txt
+#### labels.txt
 Preparing our Model for Use ```exported-models\my_tflite_model\saved_model``` as ```labels.txt```. 
 Trick is your delete all the extra things in lebel_map.pbtxt jst write down the class name.
 
@@ -229,9 +216,6 @@ Trick is your delete all the extra things in lebel_map.pbtxt jst write down the 
 
 ```
 git clone https://github.com/tanvir1546/object_detection.git
-```
-
-```
 cd object_detection
 mv raspi tflite
 cd tflite
@@ -244,23 +228,21 @@ Then, create the "tflite-env" virtual environment by issuing:
 python3 -m venv tflite-env
 ```
 
-This will create a folder called tflite1-env inside the tflite1 directory. The tflite1-env folder will hold all the package libraries for this environment. Next, activate the environment by issuing:
+This will create a folder called tflite1-env inside the tflite directory. The tflite-env folder will hold all the package libraries for this environment. Next, activate the environment by issuing:
 
 ```
 source tflite-env/bin/activate
 ```
-
-
-
-### Step 1c. Install TensorFlow Lite dependencies and OpenCV
+### Step (2.b) Install TensorFlow Lite dependencies and OpenCV
 
 ```
 cd tflite
 bash install-prerequisits.sh
 ```
 
-### Step (2.b) Set up TensorFlow Lite detection model
+### Step (2.c) Set up TensorFlow Lite detection model
 copy model.tflite and labels.txt from laptop to raspberry pi and place it to model folder
+Tree of your file should be something like this.
 ```
 tflite
   |
@@ -269,17 +251,26 @@ tflite
       |--model.tflite
       |--labels.txt
 ```
-### STEP (2.c)
+### STEP (99999999999999999)
 Have fun with your model. 
 
-## PART 3: PREPARING MODEL FOR EDGE_TPU
-### Convert to int8 for EDGE_TPU files are in laptop
+## PART 3: PREPARING MODEL FOR EDGE_TPU 
+Edge TPU can make your model run faster. you may get upto 40 FPS or more using EDGE_TPU. Little more to do.. 
+### STEP(1.a) Convert to int8 for EDGE_TPU files are in laptop
+DOWNLOAD schema_py_generated.py from
+https://drive.google.com/file/d/154wFehrb03Ck84A-5NACHsB4IGirJWcX/view?usp=sharing
+and copy it to C:\Users\**YOUR_USER_NAME**\anaconda3\envs\tflite\Lib\site-packages\tensorflow\lite\python
+
 ```
+activate tflite
 python int8.py
 ```
+you will get output named model_full_integer_quant.tflite in export_tflite_graph/saved_model directory. One last step to do. 
+Open following google colab file and upload the generated model.
 google colab EDGE_TPU compiler
 https://colab.research.google.com/drive/1o6cNNNgGhoT7_DR4jhpMKpq3mZZ6Of4N?usp=sharing#scrollTo=WTboEAWuJ0ku
 
+Now replace the files in model folder in Raspberry pi and use the new files. Hope it will work.
 ### Use JETSON Nano
 NOTE: You might want to use JP4.4 JP4.5 gives "core dumped" error...
 
