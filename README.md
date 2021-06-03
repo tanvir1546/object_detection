@@ -37,10 +37,6 @@ conda activate tensorflow
 ```
 #### Install tensorflow-gpu
 ```
-pip install tensorflow-gpu
-```
-#### If you do not have GPU
-```
 pip install tensorflow
 ```
 #### Test your installation 
@@ -62,10 +58,12 @@ mkdir TensorFlow
 cd C:\TensorFlow
 conda install -c anaconda git
 git clone https://github.com/tensorflow/models.git
+cd models
+git checkout r2.4.0
 cd models\research
 protoc object_detection\protos\*.proto --python_out=.
 C:\TensorFlow
-git clone https://github.com/tanvir1546/object-detection.git
+git clone https://github.com/tanvir1546/object_detection.git
 ```
 Close **Command Prompt**.
 ### STEP(1.c) Open Anaconda prompt and Install pre-requisites:
