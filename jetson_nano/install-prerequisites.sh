@@ -7,15 +7,15 @@ sudo apt-get install libatlas-base-dev
 python3 -m pip install --upgrade pip
 pip3 install numpy
 python3 -m pip install --upgrade Pillow
-pip3 install matplotlib
+#pip3 install matplotlib
 pip3 install pandas
 
 # Installs OpenCV pip package
-pip3 install 
-
-
 pip install opencv-python
 
 # Install the tflite_runtime
-pip install https://github.com/google-coral/pycoral/releases/download/release-frogfish/tflite_runtime-2.5.0-cp36-cp36m-linux_aarch64.whl
+echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install python3-tflite-runtime
 echo Prerequisites Installed Successfully
