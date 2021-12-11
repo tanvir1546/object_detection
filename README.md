@@ -273,13 +273,13 @@ Now replace the files in model folder in Raspberry pi and use the new files. Hop
 NOTE: You might want to use JP4.4 JP4.5 gives "core dumped" error...
 
 ```
-sudo pip3 install virtualenv
+ sudo apt-get install virtualenv
 ```
 
 Then, create the "tflite-env" virtual environment by issuing:
 
 ```
-python3 -m venv tflite-env
+ python3 -m virtualenv -p python3 tflite-env
 ```
 
 This will create a folder called tflite1-env inside the tflite1 directory. The tflite1-env folder will hold all the package libraries for this environment. Next, activate the environment by issuing:
